@@ -1,4 +1,4 @@
-Up and Down - Card Game
+#Up and Down - Card Game
 A digital implementation of the classic trick taking card game Up and Down, built in C# using Windows Forms.
 About
 Up and Down is a betting based card game where players predict how many tricks they will win each round. Score points by betting correctly and outsmarting your opponents.
