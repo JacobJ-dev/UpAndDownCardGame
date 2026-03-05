@@ -19,15 +19,14 @@ namespace UpAndDownCard
             InitializeComponent();
             controller = gc;
 
-            LoadFinalScores();
-            LoadWinnerImage();
 
-            labelWinningPlayer.Text = GameManager.Instance.GetWinningPlayer().GetPlayerName();
         }
 
         private void LoadFinalScores()
         {
             listViewFinalResults.View = View.Details;
+            listViewFinalResults.Columns.Add("Player Name", 150);
+            listViewFinalResults.Columns.Add("Score");
 
             Dictionary<string, int> playerScores = GameManager.Instance.GetPlayerScores();
 
@@ -51,5 +50,15 @@ namespace UpAndDownCard
         {
             MessageBox.Show("Feature to be implemented");
         }
+
+        private void EndGame_Load(object sender, EventArgs e)
+        {
+            LoadFinalScores();
+            LoadWinnerImage();
+
+            labelWinningPlayer.Text = GameManager.Instance.GetWinningPlayer().GetPlayerName();
+        }
+
+        
     }
 }

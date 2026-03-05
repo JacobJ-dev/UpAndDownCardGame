@@ -99,9 +99,9 @@ namespace UpAndDownCard
 
             cardPerPlayer = totalCardNum / allPlayers.Count;
 
-
+          
             maxRounds = cardPerPlayer;
-
+            
             
         }
 

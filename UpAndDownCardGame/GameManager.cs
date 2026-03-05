@@ -63,7 +63,7 @@ namespace UpAndDownCard
                 }
                 Console.WriteLine("Player: " + player.GetPlayerName() + " now has points: " + playerScores[player.GetPlayerName()]);
 
-                if (playerScores[player.GetPlayerName()] > playerScores[winningPlayer.GetPlayerName()])
+                if (winningPlayer == null || playerScores[player.GetPlayerName()] > playerScores[winningPlayer.GetPlayerName()])
                 {
                     winningPlayer = player;
                 }
