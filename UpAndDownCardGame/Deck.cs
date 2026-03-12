@@ -145,7 +145,10 @@ namespace UpAndDownCard
             return card_total;
         }
         
-
+        public int GetDeckLength()
+        {
+            return deckOfCards.Count;
+        }
         
     }
 }
