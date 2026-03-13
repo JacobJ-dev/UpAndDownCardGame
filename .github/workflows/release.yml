@@ -1,38 +1,74 @@
-name: Build and Release
+name: CI / Release
 
 on:
   push:
+    branches: [ main ] #triggers build and test on every push to main
     tags:
-      - 'v*'  # triggers when you push a tag like v1.0, v1.1 etc
+      - 'v*'
 
 jobs:
-  build:
-    runs-on: windows-latest  # uses a Windows machine since its WinForms
+
+  # JOB 1: BUILD AND TEST
+  build-and-test:
+    runs-on: windows-latest
 
     steps:
-      # Step 1 - check out your code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2 - install .NET 8
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
-      # Step 3 - build and publish
-      - name: Publish
-        run: dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
+      - name: Restore dependencies
+        run: dotnet restore
 
-      # Step 4 - zip the output
-      - name: Zip publish folder
-        run: Compress-Archive -Path ./publish/* -DestinationPath ./UpAndDownCard.zip
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
 
-      # Step 5 - create the GitHub release and attach the zip
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
+      - name: Run tests
+        run: dotnet test --no-build --configuration Release
+
+  #JOB 2: PUBLISH RELEASE ONLY ON v* TAGS
+  release:
+    runs-on: windows-latest
+    needs: build-and-test
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
-          files: ./UpAndDownCard.zip
-          body: ${{ github.event.release.body }}  # uses your release notes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Publish
+        run: >
+          dotnet publish UpAndDownCardGame/UpAndDownCardGame.csproj
+          --configuration Release
+          --runtime win-x64
+          --self-contained true
+          --output ./publish
+
+
+      - name: Zip the build
+        run: Compress-Archive -Path ./publish/* -DestinationPath ./UpAndDownCardGame-${{ github.ref_name }}.zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./UpAndDownCardGame-${{ github.ref_name }}.zip
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: true    # marks it as beta/pre-release automatically
+
+    
+
+      
+    
