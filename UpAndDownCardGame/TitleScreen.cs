@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UpAndDownCardGame;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace UpAndDownCard
@@ -53,7 +54,7 @@ namespace UpAndDownCard
             //controller.CreatePlayer("Levi Ackerman", true);
             //controller.CreatePlayer("Ralph Christian Sy Mendoza", true);
 
-            foreach(var icon in this.Controls)
+            foreach (var icon in this.Controls)
             {
                 if (icon is PictureBox p && p != selectedIcon)
                 {
@@ -70,11 +71,17 @@ namespace UpAndDownCard
 
             controller.BeginGame();
             GamePlay gamePlayScreen = new GamePlay(controller);
-            
+
             this.Hide();
             gamePlayScreen.ShowDialog();
             this.Close();
 
+        }
+
+        private void buttonRules_Click(object sender, EventArgs e)
+        {
+            RulebookForm rulebookForm = new RulebookForm();
+            rulebookForm.ShowDialog();
         }
     }
 }

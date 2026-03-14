@@ -43,6 +43,7 @@
             pictureBox8 = new PictureBox();
             pictureBox9 = new PictureBox();
             pictureBox10 = new PictureBox();
+            buttonRules = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
@@ -241,12 +242,24 @@
             pictureBox10.Tag = "Hange_Sprite.Hange Zoe";
             pictureBox10.Click += pictureBoxIcon_Click;
             // 
+            // buttonRules
+            // 
+            buttonRules.Location = new Point(899, 551);
+            buttonRules.Margin = new Padding(4, 3, 4, 3);
+            buttonRules.Name = "buttonRules";
+            buttonRules.Size = new Size(108, 38);
+            buttonRules.TabIndex = 33;
+            buttonRules.Text = "Rules";
+            buttonRules.UseVisualStyleBackColor = true;
+            buttonRules.Click += buttonRules_Click;
+            // 
             // TitleScreen
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkRed;
             ClientSize = new Size(1042, 610);
+            Controls.Add(buttonRules);
             Controls.Add(pictureBox10);
             Controls.Add(pictureBox9);
             Controls.Add(pictureBox8);
@@ -297,5 +310,6 @@
         private PictureBox pictureBox8;
         private PictureBox pictureBox9;
         private PictureBox pictureBox10;
+        private Button buttonRules;
     }
 }
