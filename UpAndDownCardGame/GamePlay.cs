@@ -230,10 +230,19 @@ namespace UpAndDownCard
 
         private void StartNextRound()
         {
-            trumpCardImageFile = "card_";
-            //Display the current Trump to all players
-            trumpCardImageFile += gameController.GetCurrentTrump().ToLower();
-            SetPictureBoxBackgroundImage(pictureBoxTrumpDisplay, trumpCardImageFile);
+            string trump = gameController.GetCurrentTrump();
+
+            if (trump == "No Trumps")
+            {
+                SetPictureBoxBackgroundImage(pictureBoxTrumpDisplay, "card_empty");
+            } else
+            {
+                trumpCardImageFile = "card_";
+                //Display the current Trump to all players
+                trumpCardImageFile += trump.ToLower();
+                SetPictureBoxBackgroundImage(pictureBoxTrumpDisplay, trumpCardImageFile);
+            }
+           
             ClearUI();
             gameController.BeginRound();
 
