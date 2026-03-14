@@ -17,14 +17,14 @@ namespace UpAndDownCard
 
         private string _name;
         public int id;
-        private bool isBot;
+        
         public int numsWinsThisRound = 0;
 
         private int tricksBetToWin = 0;
 
         private string playerIcon;
 
-        public Hand(string playerName, int id, bool isBot, string playerIcon)
+        public Hand(string playerName, int id, string playerIcon)
         {
             fullHand = new List<Card>();
             allDiamonds = new List<Card>();
@@ -34,7 +34,7 @@ namespace UpAndDownCard
 
             _name = playerName;
             this.id = id;
-            this.isBot = isBot;
+           
             this.playerIcon = playerIcon;
         }
 
@@ -53,7 +53,7 @@ namespace UpAndDownCard
             return tricksBetToWin;
         }
 
-        public void ResetWinningRounds()
+        public void ResetWinningTricks()
         {
             numsWinsThisRound = 0;
         }
@@ -63,11 +63,7 @@ namespace UpAndDownCard
             fullHand.Add(card);
         }
 
-        public bool IsPlayerBot()
-        {
-            return isBot;
-        }
-
+       
         public string GetPlayerName()
         {
             return _name;
@@ -221,18 +217,6 @@ namespace UpAndDownCard
             numsWinsThisRound = 0;
         }
 
-        public int GetNumberOfTrumpsInHand(string trump)
-        {
-            int trumpCount = 0;
-            foreach (Card card in fullHand)
-            {
-                if(card.Suit == trump)
-                {
-                    trumpCount++;
-                }
-            }
-
-            return trumpCount;
-        }
+        
     }
 }

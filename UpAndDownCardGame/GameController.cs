@@ -87,8 +87,18 @@ namespace UpAndDownCard
         /// <param name="isBot"></param>
         public void CreatePlayer(string PlayerName, bool isBot, string icon)
         {
-            Hand newPlayer = new Hand(PlayerName, allPlayers.Count, isBot, icon);
-            allPlayers.Add(newPlayer);
+            if (isBot)
+            {
+                BotPlayer newPlayer = new BotPlayer(PlayerName, allPlayers.Count, icon);
+                allPlayers.Add(newPlayer);
+            }
+            else
+            {
+                Hand newPlayer = new Hand(PlayerName, allPlayers.Count, icon);
+                allPlayers.Add(newPlayer);
+            }
+            
+            
         }
 
         /// <summary>
@@ -119,7 +129,14 @@ namespace UpAndDownCard
 
             isRoundFinished = false;
 
-            SetBotBets();
+            //Setting the bets for all bots in the game
+            foreach (Hand player in allPlayers)
+            {
+                if (player is BotPlayer bot)
+                {
+                    bot.SetBotBet(GetCurrentTrump());
+                }
+            }
 
             turnOwner = startingTurnOwner;
 
@@ -140,7 +157,7 @@ namespace UpAndDownCard
             
 
             //Set the state to decide what player leads the round
-            currentGameState = allPlayers[turnOwner].IsPlayerBot() ? GameState.BotTurn : GameState.WaitingForPlayerInput;
+            currentGameState = allPlayers[turnOwner] is BotPlayer ? GameState.BotTurn : GameState.WaitingForPlayerInput;
 
             _ = AdvanceGameStep();
 
@@ -201,14 +218,11 @@ namespace UpAndDownCard
             //If it is a bot turn, then play one move only
             if (currentGameState == GameState.BotTurn)
             {
-                Hand bot = allPlayers[turnOwner];
 
-
-
-                //Selects the first card in a bots hand that is a legal play
-                Card chosenCard = bot.GetAllCardsInHand().First(c => currentTrick.IsValidTurn(bot, c));
-
-                await PlayCard(bot, chosenCard);
+                if (allPlayers[turnOwner] is BotPlayer currentBot)
+                {
+                    currentBot.SelectCard(this);
+                }
 
 
             } 
@@ -235,7 +249,7 @@ namespace UpAndDownCard
             turnOwner = (turnOwner + 1) % allPlayers.Count;
 
             currentGameState =
-                allPlayers[turnOwner].IsPlayerBot()
+                allPlayers[turnOwner] is BotPlayer
                 ? GameState.BotTurn
                 : GameState.WaitingForPlayerInput;
 
@@ -354,30 +368,12 @@ namespace UpAndDownCard
             {
                 player.ResetHand();
                 player.SetTricksBet(0);
-                player.ResetWinningRounds();
+                player.ResetWinningTricks();
             }
         }
 
 
 
-        private void SetBotBets()
-        {
-            foreach(Hand player in allPlayers)
-            {
-                if (player.IsPlayerBot())
-                {
-                    int numTrumpCards = player.GetNumberOfTrumpsInHand(trumpList[trumpPointer]);
-                    Random random = new Random();
-                    
-                    int botBet = random.Next(0, numTrumpCards + 1);
-                    player.SetTricksBet(botBet);
-                    
-                    Console.WriteLine("Setting bet for: " + player.GetPlayerName() + " " + botBet); 
-                    Console.WriteLine();
-
-                }
-            }
-        }
 
 
 
@@ -465,7 +461,7 @@ namespace UpAndDownCard
         {
             foreach (Hand p in allPlayers)
             {
-                if (!p.IsPlayerBot())
+                if (!(p is BotPlayer))
                 {
                     return p;
                 }

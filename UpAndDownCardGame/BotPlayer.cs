@@ -13,16 +13,16 @@ namespace UpAndDownCard
         Card bestCard;
 
         public BotPlayer(string playerName, int id, string playerIcon)
-            : base(playerName, id, true, playerIcon)
+            : base(playerName, id, playerIcon)
         {
 
         }
 
-        public void SelectCard(GameController gc)
+        public async void SelectCard(GameController gc)
         {
             GetValidCardsInHand(gc);
 
-            if (IsTrickWinnable(gc)) 
+            if (IsTrickWinnable(gc) && !HasMatchedBet()) 
             {
                 gc.PlayCard(this,bestCard);
                 bestCard = null;
@@ -72,6 +72,63 @@ namespace UpAndDownCard
             }
 
             
+        }
+
+        private bool HasMatchedBet()
+        {
+            if(numsWinsThisRound == GetTricksBet())
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        /// <summary>
+        /// This method allows a bot to look at it's own cards
+        /// and 'place a bet'
+        /// </summary>
+        /// <param name="gc"></param>
+        public void SetBotBet(string trump)
+        {
+            //First the bot will check how many trump cards in hand            
+            int numTrumpCards = GetNumberOfTrumpsInHand(trump);
+
+            //Then will count how many non trump high value cards are there (Queens - Ace)
+            int numHighValueCards = GetNumHighCards(trump); 
+            //It will then take a random number from 0 to that value of winnable cards
+            int totalValueCards = numHighValueCards + numTrumpCards;
+            Random random = new Random();
+            int betValue = random.Next(0, totalValueCards + 1);
+            SetTricksBet(betValue);
+        }
+
+        private int GetNumberOfTrumpsInHand(string trump)
+        {
+            int trumpCount = 0;
+            foreach (Card card in fullHand)
+            {
+                if (card.Suit == trump)
+                {
+                    trumpCount++;
+                }
+            }
+
+            return trumpCount;
+        }
+
+        private int GetNumHighCards(string trump)
+        {
+            int numOfHighCards = 0;
+            foreach (Card card in fullHand)
+            {
+                if(card.Suit != trump && card.Value > 11)
+                {
+                    numOfHighCards++;
+                }
+            }
+
+            return numOfHighCards;
         }
     }
 }
