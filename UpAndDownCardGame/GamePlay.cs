@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UpAndDownCardGame;
 using UpAndDownCardGame.Properties;
 
 namespace UpAndDownCard
@@ -45,7 +46,7 @@ namespace UpAndDownCard
 
         }
 
-       
+
 
 
 
@@ -73,7 +74,7 @@ namespace UpAndDownCard
         {
             listBoxPlayerDisplay.SelectionMode = SelectionMode.One;
             //buttonPlayCard.Enabled = true;
-            
+
 
             UpdateActionButton();
         }
@@ -81,7 +82,7 @@ namespace UpAndDownCard
         private void GameController_OnTrickEnded()
         {
 
-  
+
             UpdateCurrentWins();
             SetPictureBoxMainImage(pictureBoxLastCard, "card_back");
 
@@ -95,7 +96,7 @@ namespace UpAndDownCard
 
 
             UpdateActionButton();
-            
+
         }
 
         private void GameController_OnRoundEnded()
@@ -103,7 +104,7 @@ namespace UpAndDownCard
 
 
             UpdateActionButton();
-            
+
         }
 
         private void GameController_OnGameEnd()
@@ -140,17 +141,17 @@ namespace UpAndDownCard
         {
             listViewPlayersAndWins.Items.Clear();
 
-            foreach(var player in gameController.GetAllPlayersData())
+            foreach (var player in gameController.GetAllPlayersData())
             {
                 var item = new ListViewItem(player.name);
                 item.SubItems.Add(player.bet.ToString());
                 item.SubItems.Add(player.won.ToString());
-                
-                listViewPlayersAndWins.Items.Add(item);              
+
+                listViewPlayersAndWins.Items.Add(item);
             }
         }
-     
-      
+
+
 
 
 
@@ -174,13 +175,13 @@ namespace UpAndDownCard
             Card lastCard = gameController.GetLastCard();
             SetPictureBoxMainImage(pictureBoxLastCard, lastCard.imgFileName);
 
-            
+
         }
 
 
         ///Action button methods
         ///---------------------------------------------------------------------------------------------------------
-        
+
         private async void PlayCard()
         {
             if (!gameController.IsWaitingForInput())
@@ -205,7 +206,7 @@ namespace UpAndDownCard
                 return;
             }
 
-            
+
 
             await gameController.PlayCard(playerHand, attemptedCard);
 
@@ -229,10 +230,19 @@ namespace UpAndDownCard
 
         private void StartNextRound()
         {
-            trumpCardImageFile = "card_";
-            //Display the current Trump to all players
-            trumpCardImageFile += gameController.GetCurrentTrump().ToLower();
-            SetPictureBoxBackgroundImage(pictureBoxTrumpDisplay, trumpCardImageFile);
+            string trump = gameController.GetCurrentTrump();
+
+            if (trump == "No Trumps")
+            {
+                SetPictureBoxBackgroundImage(pictureBoxTrumpDisplay, "card_empty");
+            } else
+            {
+                trumpCardImageFile = "card_";
+                //Display the current Trump to all players
+                trumpCardImageFile += trump.ToLower();
+                SetPictureBoxBackgroundImage(pictureBoxTrumpDisplay, trumpCardImageFile);
+            }
+           
             ClearUI();
             gameController.BeginRound();
 
@@ -313,7 +323,7 @@ namespace UpAndDownCard
         ///----------------------------------------------------------------------------------------------------------
 
 
-        
+
 
         public void ClearUI()
         {
@@ -330,9 +340,9 @@ namespace UpAndDownCard
             //Reset UI values
             RefreshCardsDisplay();
             ClearUI();
-            
+
             gameController.BeginTrick();
-            
+
         }
 
         private void listBoxPlayerDisplay_SelectedIndexChanged(object sender, EventArgs e)
@@ -341,7 +351,7 @@ namespace UpAndDownCard
 
             int selectedIndex = listBoxPlayerDisplay.SelectedIndex;
 
-            if(selectedIndex == -1)
+            if (selectedIndex == -1)
             {
                 return;
             }
@@ -356,8 +366,10 @@ namespace UpAndDownCard
 
         }
 
-        
-
-        
+        private void buttonRules_Click(object sender, EventArgs e)
+        {
+            RulebookForm rulebookForm = new RulebookForm();
+            rulebookForm.ShowDialog();
+        }
     }
 }

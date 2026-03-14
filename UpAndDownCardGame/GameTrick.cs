@@ -49,7 +49,7 @@ namespace UpAndDownCard
 
         public bool IsValidTurn(Hand hand, Card card)
         {
-            if (card.Suit == leadingSuit || card.Suit == _trumpSuit)
+            if (card.Suit == leadingSuit)
             {
                 return true;
             }

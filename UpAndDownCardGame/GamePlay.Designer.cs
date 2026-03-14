@@ -48,6 +48,7 @@
             pictureBoxWinnerDisplay = new PictureBox();
             panelWinnerDisplay = new Panel();
             labelWinningPlayer = new Label();
+            buttonRules = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBoxWinningCard).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxLeadingSuit).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxTrumpDisplay).BeginInit();
@@ -306,12 +307,24 @@
             labelWinningPlayer.Text = "Winning\r\nCard\r\n";
             labelWinningPlayer.TextAlign = ContentAlignment.TopCenter;
             // 
+            // buttonRules
+            // 
+            buttonRules.Location = new Point(13, 12);
+            buttonRules.Margin = new Padding(4, 3, 4, 3);
+            buttonRules.Name = "buttonRules";
+            buttonRules.Size = new Size(108, 38);
+            buttonRules.TabIndex = 34;
+            buttonRules.Text = "Rules";
+            buttonRules.UseVisualStyleBackColor = true;
+            buttonRules.Click += buttonRules_Click;
+            // 
             // GamePlay
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkRed;
             ClientSize = new Size(1409, 765);
+            Controls.Add(buttonRules);
             Controls.Add(panelWinnerDisplay);
             Controls.Add(buttonAction);
             Controls.Add(groupBox1);
@@ -361,6 +374,7 @@
         private System.Windows.Forms.PictureBox pictureBoxWinnerDisplay;
         private System.Windows.Forms.Panel panelWinnerDisplay;
         private System.Windows.Forms.Label labelWinningPlayer;
+        private Button buttonRules;
     }
 }
 

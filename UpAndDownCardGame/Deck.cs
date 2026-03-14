@@ -12,6 +12,7 @@ namespace UpAndDownCard
         private List<Card> deckOfCards = new List<Card>();
         private Card nextCard = null;
         private const int TOTAL_CARDS = 52;
+        private static Random random = new Random();
 
         public Deck() 
         {
@@ -75,11 +76,13 @@ namespace UpAndDownCard
             while (lastIndex > 0)
             {
                 Card tempCard = deckOfCards[lastIndex];
-                int randIndex = new Random().Next(0, lastIndex);
+                int randIndex = random.Next(0, lastIndex);
                 deckOfCards[lastIndex] = deckOfCards[randIndex];
                 deckOfCards[randIndex] = tempCard;
                 lastIndex--;
             }
+
+            nextCard = deckOfCards[deckOfCards.Count - 1];
         }
 
 
@@ -142,7 +145,10 @@ namespace UpAndDownCard
             return card_total;
         }
         
-
+        public int GetDeckLength()
+        {
+            return deckOfCards.Count;
+        }
         
     }
 }

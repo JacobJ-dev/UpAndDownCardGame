@@ -1259,5 +1259,53 @@ namespace UpAndDownCardGame.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Sasha_Sprite
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("Sasha_Sprite", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap MaoMao_Sprite
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("MaoMao_Sprite", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Nico_Hulkenberg_Sprite
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("Nico_Hulkenberg_Sprite", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Hange_Sprite
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("Hange_Sprite", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

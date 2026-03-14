@@ -89,6 +89,12 @@ namespace UpAndDownCard
 
         private void LoadTrumpCardDisplay(String trump)
         {
+            if (trump == "No Trumps")
+            {
+                pictureBoxTrumpDisplay.BackgroundImage = (Image)Resources.ResourceManager.GetObject("card_empty");
+                return;
+            }
+
             string cardFileName = "card_" + trump.ToLower();
             pictureBoxTrumpDisplay.BackgroundImage = (Image)Resources.ResourceManager.GetObject(cardFileName);
         }

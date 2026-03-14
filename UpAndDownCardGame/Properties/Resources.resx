@@ -298,9 +298,6 @@
   <data name="card_clubs_07" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\card_clubs_07.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="card_empty1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\card_empty1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="card_back" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\card_back1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -477,5 +474,17 @@
   </data>
   <data name="Spike_Sprite" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Spike_Sprite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sasha_Sprite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sasha_Sprite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MaoMao_Sprite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MaoMao_Sprite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Nico_Hulkenberg_Sprite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Nico_Hulkenberg_Sprite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Hange_Sprite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Hange_Sprite.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
