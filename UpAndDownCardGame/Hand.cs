@@ -9,7 +9,7 @@ namespace UpAndDownCard
 {
     public class Hand
     {
-        private List<Card> fullHand;
+        protected List<Card> fullHand;
         private List<Card> allDiamonds;
         private List<Card> allHearts;
         private List<Card> allSpades;

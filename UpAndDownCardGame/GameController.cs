@@ -173,8 +173,7 @@ namespace UpAndDownCard
         {
             currentTrick.PlayTurn(player, card);
             cardsPlayedThisTrick++;
-            //Debugging
-            Console.WriteLine("Player: " + player.GetPlayerName() + " has played card -> " + card.Name);
+
 
             
 
@@ -426,6 +425,10 @@ namespace UpAndDownCard
             return lastPlacedCard;
         }
 
+        /// <summary>
+        /// Returns the card that is currently winning a trick
+        /// </summary>
+        /// <returns></returns>
         public Card GetCurrentWinningCard()
         {
             return winningCard;
