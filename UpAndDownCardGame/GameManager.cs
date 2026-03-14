@@ -54,14 +54,18 @@ namespace UpAndDownCard
         {
             foreach (Hand player in hands)
             {
-                if (HasBetCorrectly(player))
+                
+
+                if (HasBetCorrectly(player) && IsAZeroMerchant(player))
                 {
                     playerScores[player.GetPlayerName()] += 5;
+                } else if (HasBetCorrectly(player))
+                {
+                    playerScores[player.GetPlayerName()] += 10 + player.numsWinsThisRound;
                 } else
                 {
-                    playerScores[player.GetPlayerName()] -= 1;
+                    playerScores[player.GetPlayerName()] += player.numsWinsThisRound;
                 }
-                Console.WriteLine("Player: " + player.GetPlayerName() + " now has points: " + playerScores[player.GetPlayerName()]);
 
                 if (winningPlayer == null || playerScores[player.GetPlayerName()] > playerScores[winningPlayer.GetPlayerName()])
                 {
@@ -74,6 +78,20 @@ namespace UpAndDownCard
         private bool HasBetCorrectly(Hand player)
         {
             if (player.numsWinsThisRound == player.GetTricksBet())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// This method makes a check to see if a player made a 0 tricks bet (zero merchant)
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        private bool IsAZeroMerchant(Hand player)
+        {
+            if(player.GetTricksBet() == 0)
             {
                 return true;
             }
