@@ -11,7 +11,7 @@ namespace UpAndDownCard
     public partial class GamePlay : Form
     {
         GameController gameController;
-        string trumpCardImageFile;
+        string? trumpCardImageFile;
 
 
 
@@ -88,7 +88,7 @@ namespace UpAndDownCard
 
 
 
-            Hand trickWinner = gameController.GetTrickWinner();
+            Hand trickWinner = gameController.GetTrickWinner()!;
 
             SetPictureBoxBackgroundImage(pictureBoxWinnerDisplay, trickWinner.GetPlayerIcon());
             labelWinningPlayer.Text = trickWinner.GetPlayerName();
@@ -114,21 +114,39 @@ namespace UpAndDownCard
             endForm.ShowDialog();
         }
 
-        public void SetPictureBoxBackgroundImage(PictureBox pictureBox, string filename)
+        private void SetPictureBoxBackgroundImage(PictureBox pictureBox, string filename)
         {
-            pictureBox.BackgroundImage = (Image)Resources.ResourceManager.GetObject(filename);
+            var resource = Resources.ResourceManager.GetObject(filename);
+
+            if (resource is Image image)
+            {
+                pictureBox.BackgroundImage = image;
+            } 
+            else
+            {
+                Console.Error.WriteLine($"Resource '{filename}' not found or is not an Image");
+            }
         }
 
         private void SetPictureBoxMainImage(PictureBox pictureBox, string filename)
         {
-            pictureBox.Image = (Image)Resources.ResourceManager.GetObject(filename);
+            var resource = Resources.ResourceManager.GetObject(filename);
+
+            if (resource is Image image)
+            {
+                pictureBox.Image = image;
+            }
+            else
+            {
+                Console.Error.WriteLine($"Resource '{filename}' not found or is not an Image");
+            }
         }
 
 
 
         private void RefreshCardsDisplay()
         {
-            Hand playerHand = gameController.GetPlayerCards();
+            Hand playerHand = gameController.GetPlayerCards()!;
             listBoxPlayerDisplay.Items.Clear();
 
             foreach (Card card in playerHand.GetAllCardsInHand())
@@ -164,15 +182,15 @@ namespace UpAndDownCard
 
 
             //Display current winning card
-            Card winner = gameController.GetCurrentWinningCard();
+            Card winner = gameController.GetCurrentWinningCard()!;
             String winningCardFile = winner.imgFileName + "_icon";
             SetPictureBoxBackgroundImage(pictureBoxWinningCard, winningCardFile);
 
             String leadingSuitFile = "card_";
-            leadingSuitFile += gameController.GetLeadingSuit().ToLower();
+            leadingSuitFile += gameController.GetLeadingSuit()!.ToLower();
             SetPictureBoxBackgroundImage(pictureBoxLeadingSuit, leadingSuitFile);
 
-            Card lastCard = gameController.GetLastCard();
+            Card lastCard = gameController.GetLastCard()!;
             SetPictureBoxMainImage(pictureBoxLastCard, lastCard.imgFileName);
 
 
@@ -196,9 +214,9 @@ namespace UpAndDownCard
             }
 
             //Retrieve the card object that was selected
-            Hand playerHand = gameController.GetPlayerCards();
+            Hand playerHand = gameController.GetPlayerCards()!;
             Card attemptedCard = playerHand.GetCardByName(
-                listBoxPlayerDisplay.Items[selectedIndex].ToString());
+                listBoxPlayerDisplay.Items[selectedIndex].ToString()!);
 
             if (!gameController.CanUseCard(playerHand, attemptedCard))
             {
@@ -223,7 +241,7 @@ namespace UpAndDownCard
             RefreshCardsDisplay();
             ClearUI();
 
-            gameController.BeginTrick();
+            _ = gameController.BeginTrick();
 
             UpdateActionButton();
         }
@@ -261,7 +279,7 @@ namespace UpAndDownCard
 
             UpdateCurrentWins();
             //buttonPlayCard.Enabled = true;
-            gameController.BeginTrick();
+            _ = gameController.BeginTrick();
 
             UpdateActionButton();
         }
@@ -341,7 +359,7 @@ namespace UpAndDownCard
             RefreshCardsDisplay();
             ClearUI();
 
-            gameController.BeginTrick();
+            _ = gameController.BeginTrick();
 
         }
 
@@ -356,10 +374,10 @@ namespace UpAndDownCard
                 return;
             }
 
-            Hand playerHand = gameController.GetPlayerCards();
+            Hand playerHand = gameController.GetPlayerCards()!;
 
             Card currentSelctedCard = playerHand.GetCardByName(
-                listBoxPlayerDisplay.Items[selectedIndex].ToString());
+                listBoxPlayerDisplay.Items[selectedIndex].ToString()!);
 
             String fileName = currentSelctedCard.imgFileName + "_icon";
             SetPictureBoxBackgroundImage(pictureBoxSelectedCard, fileName);

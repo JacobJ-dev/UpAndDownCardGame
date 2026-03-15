@@ -19,7 +19,7 @@ namespace UpAndDownCard
             InitializeComponent();
         }
 
-        private PictureBox selectedIcon = null;
+        private PictureBox? selectedIcon;
 
         private void pictureBoxIcon_Click(object sender, EventArgs e)
         {
@@ -45,20 +45,23 @@ namespace UpAndDownCard
             GameController controller = new GameController();
 
             string playerName = textBoxPlayerName.Text;
-            string tag = selectedIcon.Tag as String;
+            string? tag = selectedIcon.Tag as String;
+            if (tag == null)
+            {
+                MessageBox.Show("Selected icon has no tag set, contact developer");
+                return;
+            }
             string[] elements = tag.Split('.');
             string playerIcon = elements[0];
             controller.CreatePlayer(playerName, false, playerIcon);
-            //controller.CreatePlayer("Satoru Gojo", true);
-            //controller.CreatePlayer("Suguru Geto", true);
-            //controller.CreatePlayer("Levi Ackerman", true);
-            //controller.CreatePlayer("Ralph Christian Sy Mendoza", true);
+
 
             foreach (var icon in this.Controls)
             {
                 if (icon is PictureBox p && p != selectedIcon)
                 {
                     tag = p.Tag as String;
+                    if (tag == null) continue;
                     elements = tag.Split('.');
                     string botName = elements[1];
                     string botIcon = elements[0];

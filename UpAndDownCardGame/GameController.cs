@@ -19,7 +19,7 @@ namespace UpAndDownCard
         private int startingTurnOwner;
 
 
-        private int maxRounds;
+        private int? maxRounds;
         private bool isDecrease = true;
         
         
@@ -27,32 +27,32 @@ namespace UpAndDownCard
         private string[] trumpList = { "Diamonds", "Hearts", "Spades", "Clubs", "No Trumps" };
         private int trumpPointer;
 
-        private GameTrick currentTrick;
+        private GameTrick? currentTrick;
         
 
         //Deck related variables
         private Deck deck;
-        private int totalCardNum;
-        private int cardPerPlayer;
+        private int? totalCardNum;
+        private int? cardPerPlayer;
 
 
-        private int cardsPlayedThisTrick;
+        private int? cardsPlayedThisTrick;
 
 
         //UI related information
-        private Hand winningPlayer;
-        private Card winningCard;
-        private string leadingSuit;
-        private Card lastPlacedCard;
+        private Hand? winningPlayer;
+        private Card? winningCard;
+        private string? leadingSuit;
+        private Card? lastPlacedCard;
 
         private bool isRoundFinished = true;
 
 
-        public event Action<GameController> OnTrickStateUpdated;
-        public event Action OnTrickEnded;
-        public event Action OnPlayerTurn;
-        public event Action OnRoundEnd;
-        public event Action OnGameEnd;
+        public event Action<GameController>? OnTrickStateUpdated;
+        public event Action? OnTrickEnded;
+        public event Action? OnPlayerTurn;
+        public event Action? OnRoundEnd;
+        public event Action? OnGameEnd;
 
         
         public enum GameState
@@ -147,7 +147,7 @@ namespace UpAndDownCard
         /// <summary>
         /// Setups the single trick, initialising the trick object with a trump, and allows players to place one card for this trick
         /// </summary>
-        public void BeginTrick()
+        public async Task BeginTrick()
         {
             //Create a new trick logic object
             currentTrick = new GameTrick(trumpList[trumpPointer]);
@@ -159,7 +159,7 @@ namespace UpAndDownCard
             //Set the state to decide what player leads the round
             currentGameState = allPlayers[turnOwner] is BotPlayer ? GameState.BotTurn : GameState.WaitingForPlayerInput;
 
-            _ = AdvanceGameStep();
+            await AdvanceGameStep();
 
         }
 
@@ -172,7 +172,7 @@ namespace UpAndDownCard
         public bool CanUseCard(Hand player, Card card)
         {
             //If the card is not a valid play
-            if (!currentTrick.IsValidTurn(player, card))
+            if (!currentTrick!.IsValidTurn(player, card))
             {
                 return false;
             }
@@ -188,7 +188,7 @@ namespace UpAndDownCard
         /// <returns></returns>
         public async Task PlayCard(Hand player, Card card)
         {
-            currentTrick.PlayTurn(player, card);
+            currentTrick!.PlayTurn(player, card);
             cardsPlayedThisTrick++;
 
 
@@ -199,7 +199,7 @@ namespace UpAndDownCard
             Application.DoEvents();
             await Task.Delay(600);
 
-            CheckGameProgress();
+            await CheckGameProgress();
 
 
 
@@ -213,7 +213,7 @@ namespace UpAndDownCard
         ///Private Methods
         //----------------------------------------------------------------------------------------------------------
 
-        private async Task AdvanceGameStep()
+        private Task AdvanceGameStep()
         {
             //If it is a bot turn, then play one move only
             if (currentGameState == GameState.BotTurn)
@@ -230,6 +230,7 @@ namespace UpAndDownCard
             {
                 OnPlayerTurn?.Invoke();
             }
+            return Task.CompletedTask;
         }
 
 
@@ -237,7 +238,7 @@ namespace UpAndDownCard
         {
             if (cardsPlayedThisTrick == allPlayers.Count)
             {
-                winningPlayer = currentTrick.GetTrickWinner();
+                winningPlayer = currentTrick!.GetTrickWinner();
                 winningPlayer.numsWinsThisRound += 1;
 
                 currentGameState = GameState.EndOfTrick;
@@ -255,16 +256,16 @@ namespace UpAndDownCard
 
            
                 await Task.Delay(600);
-                _ = AdvanceGameStep();
+                await AdvanceGameStep();
             
         }
 
         private void SetUIValues()
         {
-            winningPlayer = currentTrick.GetTrickWinner();
-            winningCard = currentTrick.GetCurrentHighestCard();
-            leadingSuit = currentTrick.GetLeadingSuit();
-            lastPlacedCard = currentTrick.GetLastCard();
+            winningPlayer = currentTrick!.GetTrickWinner();
+            winningCard = currentTrick!.GetCurrentHighestCard();
+            leadingSuit = currentTrick!.GetLeadingSuit();
+            lastPlacedCard = currentTrick!.GetLastCard();
         }
 
 
@@ -411,12 +412,12 @@ namespace UpAndDownCard
 
         // GETTERS AND SETTERS
 
-        public bool GetRoundState()
+        public bool? GetRoundState()
         {
             return isRoundFinished;
         }
 
-        public Card GetLastCard()
+        public Card? GetLastCard()
         {
             return lastPlacedCard;
         }
@@ -425,12 +426,12 @@ namespace UpAndDownCard
         /// Returns the card that is currently winning a trick
         /// </summary>
         /// <returns></returns>
-        public Card GetCurrentWinningCard()
+        public Card? GetCurrentWinningCard()
         {
             return winningCard;
         }
 
-        public string GetLeadingSuit()
+        public string? GetLeadingSuit()
         {
             return leadingSuit;
         }
@@ -457,7 +458,7 @@ namespace UpAndDownCard
         /// Retrieves the human player hand object
         /// </summary>
         /// <returns></returns>
-        public Hand GetPlayerCards()
+        public Hand? GetPlayerCards()
         {
             foreach (Hand p in allPlayers)
             {
@@ -470,16 +471,8 @@ namespace UpAndDownCard
             return null;
         }
 
-        public String GetWinningMessage()
-        {
-            return "Winner of trick -> " + winningPlayer.GetPlayerName() + " with : " + winningCard.Name;
-        }
 
-        public int GetPlayerBet()
-        {
-            Hand player = GetPlayerCards();
-            return player.GetTricksBet();
-        }
+
 
         public List<Hand> GetAllPlayers()
         {
@@ -506,7 +499,7 @@ namespace UpAndDownCard
             return false;
         }
 
-        public Hand GetTrickWinner()
+        public Hand? GetTrickWinner()
         {
             return winningPlayer;
         }

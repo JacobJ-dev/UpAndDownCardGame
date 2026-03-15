@@ -29,7 +29,7 @@ namespace UpAndDownCard
                 MessageBox.Show("Selected bet of: " + comboBoxTrickBetOptions.Text + " is invalid, try again");
                 return;
             }
-            Hand player = controller.GetPlayerCards();
+            Hand player = controller.GetPlayerCards()!;
             player.SetTricksBet(int.Parse(comboBoxTrickBetOptions.Text));
 
             this.Close();
@@ -49,7 +49,7 @@ namespace UpAndDownCard
                 return false;
             }
 
-            Hand player = controller.GetPlayerCards();
+            Hand player = controller.GetPlayerCards()!;
             
             if (betAmount > player.GetNumberOfCards())
             {
@@ -60,7 +60,7 @@ namespace UpAndDownCard
 
         private void BettingForm_Load(object sender, EventArgs e)
         {
-            Hand player = controller.GetPlayerCards();
+            Hand player = controller.GetPlayerCards()!;
             LoadPlayerCardsDisplay(player);
             LoadTrickBetsOption(player);
             LoadTrumpCardDisplay(controller.GetCurrentTrump());
@@ -91,12 +91,26 @@ namespace UpAndDownCard
         {
             if (trump == "No Trumps")
             {
-                pictureBoxTrumpDisplay.BackgroundImage = (Image)Resources.ResourceManager.GetObject("card_empty");
+                SetPictureBoxBackgroundImage(pictureBoxTrumpDisplay, "card_empty");
                 return;
             }
 
             string cardFileName = "card_" + trump.ToLower();
-            pictureBoxTrumpDisplay.BackgroundImage = (Image)Resources.ResourceManager.GetObject(cardFileName);
+            SetPictureBoxBackgroundImage(pictureBoxTrumpDisplay, cardFileName);
+        }
+
+        private void SetPictureBoxBackgroundImage(PictureBox pictureBox, string filename)
+        {
+            var resource = Resources.ResourceManager.GetObject(filename);
+
+            if (resource is Image image)
+            {
+                pictureBox.BackgroundImage = image;
+            }
+            else
+            {
+                Console.Error.WriteLine($"Resource '{filename}' not found or is not an Image");
+            }
         }
 
 

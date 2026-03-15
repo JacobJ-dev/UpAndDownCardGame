@@ -9,8 +9,8 @@ namespace UpAndDownCard
     public class BotPlayer : Hand
     {
 
-        List<Card> validCards;
-        Card bestCard;
+        List<Card>? validCards;
+        Card? bestCard;
 
         public BotPlayer(string playerName, int id, string playerIcon)
             : base(playerName, id, playerIcon)
@@ -18,28 +18,28 @@ namespace UpAndDownCard
 
         }
 
-        public async void SelectCard(GameController gc)
+        public void SelectCard(GameController gc)
         {
             GetValidCardsInHand(gc);
 
             if (IsTrickWinnable(gc) && !HasMatchedBet()) 
             {
-                gc.PlayCard(this,bestCard);
+                _ = gc.PlayCard(this,bestCard!);
                 bestCard = null;
                 
             } else
             {
-                gc.PlayCard(this, validCards.FirstOrDefault());
+                _ = gc.PlayCard(this, validCards!.FirstOrDefault()!);
             }
 
         }
 
         private bool IsTrickWinnable(GameController gc)
         {
-            Card currentWinner = gc.GetCurrentWinningCard();
+            Card currentWinner = gc.GetCurrentWinningCard()!;
             String currentTrump = gc.GetCurrentTrump();
 
-            foreach (Card card in validCards)
+            foreach (Card card in validCards!)
             {
                 //If the current card value is higher than the current winning card
                 if (card.Value > currentWinner.Value)

@@ -102,10 +102,10 @@ namespace UpAndDownCard
             fullHand.AddRange(allSpades);
             fullHand.AddRange(allClubs);
 
-            allDiamonds = null;
-            allHearts = null;
-            allSpades = null;
-            allClubs = null;
+            allDiamonds.Clear();
+            allHearts.Clear();
+            allSpades.Clear();
+            allClubs.Clear();
 
             //SortCards(fullHand, 0, fullHand.Count - 1);
         }
@@ -183,8 +183,7 @@ namespace UpAndDownCard
                 }
             }
 
-            Console.Error.WriteLine("Card: " + name + " not found in " + _name + " hand");
-            return null;
+            throw new InvalidOperationException($"Card '{name}' not found in {_name}'s hand");
         }
 
         public List<Card> GetAllCardsInHand()
