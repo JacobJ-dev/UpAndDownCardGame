@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using System.Configuration;
 //using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace UpAndDownCard
@@ -197,7 +198,11 @@ namespace UpAndDownCard
             SetUIValues();
             OnTrickStateUpdated?.Invoke(this);
             Application.DoEvents();
-            await Task.Delay(600);
+            if (!int.TryParse(ConfigurationManager.AppSettings["botDecisionDelay"], out int delay))
+            {
+                delay = 600;
+            }
+            await Task.Delay(delay);
 
             await CheckGameProgress();
 
@@ -254,9 +259,14 @@ namespace UpAndDownCard
                 ? GameState.BotTurn
                 : GameState.WaitingForPlayerInput;
 
-           
-                await Task.Delay(600);
-                await AdvanceGameStep();
+
+
+            if(!int.TryParse(ConfigurationManager.AppSettings["botDecisionDelay"], out int delay))
+            {
+                delay = 600;
+            }
+            await Task.Delay(delay);
+            await AdvanceGameStep();
             
         }
 
